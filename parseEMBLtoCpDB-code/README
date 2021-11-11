@@ -1,0 +1,22 @@
+For Ubuntu 10 OS or higher:
+
+1. Install flex:
+
+sudo apt-get install flex
+
+2. Install bison
+
+sudo apt-get install bison
+
+3. Install build-essential package:
+
+sudo apt-get install build-essential
+
+4. Run ./make to compile
+
+Enjoy it ...
+
+BUG 1) Large EMBL/Genbank text qualifiers are not supported (>255 characters). 
+They certainly will throw a stack overflow. To walk around: just remove from the 
+EMBL/Genbank target file those text qualifiers containing texts greater than 255 
+characters.

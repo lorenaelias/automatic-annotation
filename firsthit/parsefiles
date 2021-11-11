@@ -1,0 +1,11 @@
+#!/bin/sh -
+if [ $# = 1 -a  -r $1 ]
+then
+   echo "id\ttamanho\tproduto\torganismo\tevalue\tpercentual" > allfirsthits.out
+   for i in `cat $1`
+   do
+	firsthitparser $i >> allfirsthits.out
+   done    
+else
+    echo Parametro= lista com arquivos para serem processados
+fi

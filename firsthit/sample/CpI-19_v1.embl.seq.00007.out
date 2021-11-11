@@ -1,0 +1,65 @@
+BLASTP 2.2.20 [Feb-08-2009]
+
+
+Reference: Altschul, Stephen F., Thomas L. Madden, Alejandro A. Schaffer, 
+Jinghui Zhang, Zheng Zhang, Webb Miller, and David J. Lipman (1997), 
+"Gapped BLAST and PSI-BLAST: a new generation of protein database search
+programs",  Nucleic Acids Res. 25:3389-3402.
+
+Reference for compositional score matrix adjustment: Altschul, Stephen F., 
+John C. Wootton, E. Michael Gertz, Richa Agarwala, Aleksandr Morgulis,
+Alejandro A. Schaffer, and Yi-Kuo Yu (2005) "Protein database searches
+using compositionally adjusted substitution matrices", FEBS J. 272:5101-5109.
+
+Query= CpI19_0007 CpI19_0007 undefined product 8303:8389 reverse
+MW:3113
+         (28 letters)
+
+Database: All non-redundant GenBank CDS
+translations+PDB+SwissProt+PIR+PRF excluding environmental samples
+from WGS projects 
+           9,872,238 sequences; 3,367,254,282 total letters
+
+Searching..................................................done
+
+ ***** No hits found ******
+
+
+  Database: All non-redundant GenBank CDS
+  translations+PDB+SwissProt+PIR+PRF excluding environmental samples
+  from WGS projects
+    Posted date:  Oct 11, 2009  5:41 PM
+  Number of letters in database: 3,367,254,282
+  Number of sequences in database:  9,872,238
+  
+Lambda     K      H
+   0.325    0.133    0.361 
+
+Gapped
+Lambda     K      H
+   0.267   0.0410    0.140 
+
+
+Matrix: BLOSUM62
+Gap Penalties: Existence: 11, Extension: 1
+Number of Sequences: 9872238
+Number of Hits to DB: 132,725,966
+Number of extensions: 1445363
+Number of successful extensions: 3023
+Number of sequences better than 1.0e-06: 0
+Number of HSP's gapped: 3023
+Number of HSP's successfully gapped: 0
+Length of query: 28
+Length of database: 3,367,254,282
+Length adjustment: 3
+Effective length of query: 25
+Effective length of database: 3,337,637,568
+Effective search space: 83440939200
+Effective search space used: 83440939200
+Neighboring words threshold: 11
+Window for multiple hits: 40
+X1: 15 ( 7.0 bits)
+X2: 38 (14.6 bits)
+X3: 64 (24.7 bits)
+S1: 40 (21.7 bits)
+S2: 134 (56.2 bits)

@@ -1,0 +1,12 @@
+insert into  rRNA (locus_tag, pos_begin, pos_end, orientation, product, organism)  values ('WMS_RS04065', 219330, 219445, '-', '5S ribosomal RNA', 'Corynebacterium pseudoturbeculosis');
+insert into  rRNA (locus_tag, pos_begin, pos_end, orientation, product, organism)  values ('WMS_RS04070', 219542, 222454, '-', '23S ribosomal RNA', 'Corynebacterium pseudoturbeculosis');
+insert into  rRNA (locus_tag, pos_begin, pos_end, orientation, product, organism)  values ('WMS_RS04075', 222681, 224241, '-', '16S ribosomal RNA', 'Corynebacterium pseudoturbeculosis');
+insert into  rRNA (locus_tag, pos_begin, pos_end, orientation, product, organism)  values ('WMS_RS05315', 480724, 482284, '+', '16S ribosomal RNA', 'Corynebacterium pseudoturbeculosis');
+insert into  rRNA (locus_tag, pos_begin, pos_end, orientation, product, organism)  values ('WMS_RS05325', 482613, 485525, '+', '23S ribosomal RNA', 'Corynebacterium pseudoturbeculosis');
+insert into  rRNA (locus_tag, pos_begin, pos_end, orientation, product, organism)  values ('WMS_RS05330', 485622, 485737, '+', '5S ribosomal RNA', 'Corynebacterium pseudoturbeculosis');
+insert into  rRNA (locus_tag, pos_begin, pos_end, orientation, product, organism)  values ('WMS_RS08785', 1180248, 1181808, '+', '16S ribosomal RNA', 'Corynebacterium pseudoturbeculosis');
+insert into  rRNA (locus_tag, pos_begin, pos_end, orientation, product, organism)  values ('WMS_RS08795', 1182137, 1185049, '+', '23S ribosomal RNA', 'Corynebacterium pseudoturbeculosis');
+insert into  rRNA (locus_tag, pos_begin, pos_end, orientation, product, organism)  values ('WMS_RS08800', 1185146, 1185261, '+', '5S ribosomal RNA', 'Corynebacterium pseudoturbeculosis');
+insert into  rRNA (locus_tag, pos_begin, pos_end, orientation, product, organism)  values ('WMS_RS15895', 2644882, 2644997, '-', '5S ribosomal RNA', 'Corynebacterium pseudoturbeculosis');
+insert into  rRNA (locus_tag, pos_begin, pos_end, orientation, product, organism)  values ('WMS_RS15900', 2645094, 2648006, '-', '23S ribosomal RNA', 'Corynebacterium pseudoturbeculosis');
+insert into  rRNA (locus_tag, pos_begin, pos_end, orientation, product, organism)  values ('WMS_RS15905', 2648233, 2649793, '-', '16S ribosomal RNA', 'Corynebacterium pseudoturbeculosis');

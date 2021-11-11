@@ -1,0 +1,39 @@
+#!/bin/sh -
+
+if [ -r ./lex.yy.c ] 
+then
+   rm ./lex.yy.c
+fi
+if [ -r ./gene.tab.h ] 
+then 
+   rm ./gene.tab.h
+fi
+if [ -r ./gene.tab.c ] 
+then 
+   rm ./gene.tab.c
+fi
+if [ -r ./parser ] 
+then
+   rm ./parser
+fi
+if [ -r ./insert.gene.sql ] 
+then
+   rm ./insert.gene.sql
+   rm ./insert.repeat.sql
+   rm ./insert.domain.sql
+   rm ./insert.signal.sql
+   rm ./insert.trna.sql
+   rm ./insert.rrna.sql
+   rm ./insert.GO.sql
+   rm ./insert.multipos.sql
+fi
+
+flex gene.l
+bison -d gene.y
+gcc GO.c lex.yy.c gene.tab.c -o parser
+
+if [ -r parser ] 
+then
+   ./parser ./SC-01.embl	  >  ./out
+   ./parser ./SC-02.embl    >>  ./out
+fi

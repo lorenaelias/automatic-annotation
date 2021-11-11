@@ -1,0 +1,26 @@
+#!/bin/sh -
+if [ -r lex.yy.c ] 
+then
+   rm lex.yy.c
+fi
+if [ -r go.tab.h ] 
+then 
+   rm go.tab.h
+fi
+if [ -r go.tab.c ] 
+then 
+   rm go.tab.c
+fi
+if [ -r parser ] 
+then
+   rm goparser
+fi
+
+flex go.l
+bison -d go.y
+gcc lex.yy.c go.tab.c -o goparser
+
+if [ -r goparser ] 
+then
+   ./goparser ./gene_ontology.1_2.obo >  ./out.go
+fi

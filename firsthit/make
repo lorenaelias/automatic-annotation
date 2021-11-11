@@ -1,0 +1,26 @@
+#!/bin/sh -
+if [ -r lex.yy.c ] 
+then
+   rm lex.yy.c
+fi
+if [ -r firsthit.tab.h ] 
+then 
+   rm firsthit.tab.h
+fi
+if [ -r firsthit.tab.c ] 
+then 
+   rm firsthit.tab.c
+fi
+if [ -r parser ] 
+then
+   rm firsthitparser
+fi
+
+flex firsthit.l
+bison -d firsthit.y
+gcc lex.yy.c firsthit.tab.c -o firsthitparser
+
+if [ -r firsthitparser ] 
+then
+   ./firsthitparser ./sample/CpI-19_v1.embl.seq.00001.out >  ./out.firsthit
+fi

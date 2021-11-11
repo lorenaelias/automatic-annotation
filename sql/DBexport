@@ -1,0 +1,7 @@
+psql -h 152.67.63.56 -U cpdb04admin -p 5433 -f ./ExportAllwith1002.sql -o $1 -t cpdb04
+sed -i "s/[ ]*|[ ]*/;/g"        $1
+sed -i "s/[;]\+FT /\nFT /g" 	$1
+sed -i "s/[;]\+$//g" 		$1
+sed -i "s/^[ ]*//g"             $1
+sed -i "s/([ ]\+$/(/g"          $1
+sed -i "s/\.\.[ ]\+$/\.\./g"    $1

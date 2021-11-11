@@ -1,0 +1,1555 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = off;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET escape_string_warning = off;
+
+--
+-- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
+--
+
+CREATE PROCEDURAL LANGUAGE plpgsql;
+
+
+ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO postgres;
+
+SET search_path = public, pg_catalog;
+
+--
+-- Name: decidecolor(integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION decidecolor(pseudogene integer, pathogenicity integer) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    resultado text;
+BEGIN
+	IF  	pseudogene = 0 and pathogenicity = 0 THEN
+		resultado = '3';
+	ELSIF pseudogene = 0 and pathogenicity > 0 THEN
+		resultado = '11;FT                   /pathogenicity=' || pathogenicity;
+	ELSIF pseudogene = 1 and pathogenicity > 0 THEN
+		resultado = '2;FT                   /pseudo;FT                   /pathogenicity=' || pathogenicity;
+	ELSE
+		resultado = '2;FT                   /pseudo';
+	END IF;
+	RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.decidecolor(pseudogene integer, pathogenicity integer) OWNER TO postgres;
+
+--
+-- Name: decidecolor(integer, numeric, integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION decidecolor(pseudogene integer, identity numeric, alignsize integer, size integer) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    resultado text;
+BEGIN
+	IF  	alignsize = size and identity = 100 THEN
+		resultado = '3';
+	ELSIF alignsize > (size*0.9) and identity > 90 THEN
+		resultado = '7';
+	ELSE
+		resultado = '2';
+	END IF;
+	IF pseudogene > 0 THEN
+		resultado = resultado + ';FT                   /pseudo=';
+	END IF;
+	
+	RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.decidecolor(pseudogene integer, identity numeric, alignsize integer, size integer) OWNER TO postgres;
+
+--
+-- Name: eval(text); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION eval(mystring text) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    resultado text;
+BEGIN
+	IF  	mystring is null THEN
+		resultado = 'unknown';
+	ELSE
+		resultado = mystring;
+	END IF;
+	RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.eval(mystring text) OWNER TO postgres;
+
+--
+-- Name: genome_protein_id(text, text, text); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION genome_protein_id(p_organism text, locus_tag text, p_protein_id text) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    resultado text;
+BEGIN
+	resultado = '';
+	IF  	p_organism = 'CP001809' THEN
+		IF p_protein_id <> '' THEN
+			resultado = 'gnl|ufmg|' || locus_tag || '|gb|' || p_protein_id;
+		ELSE
+			resultado = 'gnl|ufmg|' || locus_tag;
+		END IF;
+	ELSIF p_organism = 'CP001829' THEN
+		IF p_protein_id <> '' THEN
+			resultado = 'gnl|ufmg|' || locus_tag || '|gb|' || p_protein_id;
+		ELSE
+			resultado = 'gnl|ufmg|' || locus_tag;
+		END IF;
+	ELSIF p_organism = 'CP002251' THEN
+		IF p_protein_id <> '' THEN
+			resultado = 'gnl|gbufpa|' || locus_tag || '|gb|' || p_protein_id;
+		ELSE
+			resultado = 'gnl|gbufpa|' || locus_tag;		
+		END IF;
+	ELSIF p_organism = 'CP002924' THEN
+		IF p_protein_id <> '' THEN
+			resultado = 'gnl|gbufpa|' || locus_tag || '|gb|' || p_protein_id;
+		ELSE
+			resultado = 'gnl|gbufpa|' || locus_tag;
+		END IF;
+	ELSIF p_organism = 'CP003062' THEN
+		IF p_protein_id <> '' THEN
+			resultado = 'gnl|gbufpa|' || locus_tag || '|gb|' || p_protein_id;
+		ELSE
+			resultado = 'gnl|gbufpa|' || locus_tag;
+		END IF;
+	ELSIF p_organism = 'CP003061' THEN
+		IF p_protein_id <> '' THEN
+			resultado = 'gnl|gbufpa|' || locus_tag || '|gb|' || p_protein_id;
+		ELSE
+			resultado = 'gnl|gbufpa|' || locus_tag;
+		END IF;
+	ELSIF p_organism = '106v4' THEN
+		IF p_protein_id <> '' THEN
+			resultado = 'gnl|gbufpa|' || locus_tag || '|gb|' || p_protein_id;
+		ELSE
+			resultado = 'gnl|gbufpa|' || locus_tag;
+		END IF;
+	ELSIF p_organism = '316v14' THEN
+		IF p_protein_id <> '' THEN
+			resultado = 'gnl|gbufpa|' || locus_tag || '|gb|' || p_protein_id;
+		ELSE
+			resultado = 'gnl|gbufpa|' || locus_tag;
+		END IF;
+	ELSIF p_organism = 'NC_014329' THEN
+		IF p_protein_id <> '' THEN
+			resultado = 'gnl|OVERWRITE_DBNAME|' || locus_tag || '|gb|' || p_protein_id;
+	ELSE
+			resultado = 'gnl|OVERWRITE_DBNAME|' || locus_tag;
+		END IF;
+	END IF;
+	RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.genome_protein_id(p_organism text, locus_tag text, p_protein_id text) OWNER TO postgres;
+
+--
+-- Name: genomecode(text); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION genomecode(p_organism text) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    resultado text;
+BEGIN
+	IF  	p_organism = 'CP001809' THEN
+		resultado = 'Cp1002';
+	ELSIF p_organism = 'CP001829' THEN
+		resultado = 'CpC231';
+	ELSIF p_organism = 'CP002251' THEN
+		resultado = 'CpI19';		
+	ELSIF p_organism = 'CpPAT10v5' THEN
+		resultado = 'CpPAT10';		
+	ELSIF p_organism = 'NC_014329' THEN
+		resultado = 'CpFRC41';		
+	ELSE
+		resultado = p_organism;
+	END IF;
+	RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.genomecode(p_organism text) OWNER TO postgres;
+
+--
+-- Name: getalldomain(character varying); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION getalldomain(nome character varying) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    r domain%rowtype;
+    cursor_domain CURSOR FOR SELECT * FROM domain WHERE  domain.gene_systematic_id = nome;
+    resultado text;
+BEGIN
+    resultado = '';
+    OPEN cursor_domain;
+    LOOP
+	FETCH cursor_domain INTO r;
+	IF FOUND THEN
+		IF r.orientation = '-' THEN
+			resultado = resultado || 
+			'FT   misc_feature    complement(' || r.pos_begin || '..' || r.pos_end || ');' ||
+			'FT                   /domain="' || r.name || '";' ||
+			'FT                   /id="' || r.gene_systematic_id ||'";' ||
+			'FT                   /label=' || r.label || ';' ||
+			'FT                   /note="' || r.note || '";' ||
+			'FT                   /colour=13;';
+		ELSE
+			resultado = resultado || 
+			'FT   misc_feature    ' || r.pos_begin || '..' || r.pos_end || ';' ||
+			'FT                   /domain="' || r.name || '";' ||
+			'FT                   /id="' || r.gene_systematic_id ||'";' ||
+			'FT                   /label=' || r.label || ';' ||
+			'FT                   /note="' || r.note || '";' ||
+			'FT                   /colour=13;';
+		END IF; 
+	ELSE
+		EXIT;
+	END IF;
+    END LOOP;
+    CLOSE cursor_domain;
+    RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.getalldomain(nome character varying) OWNER TO postgres;
+
+--
+-- Name: getallgo(character varying); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION getallgo(nome character varying) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    current_goid go.go_id%TYPE;
+    cursor_goid CURSOR FOR SELECT distinct go.go_id FROM go WHERE go.gene_systematic_id=nome;
+    resultado text;
+    l_namespace goterm.namespace%TYPE;
+    l_aspect go.go_value%TYPE;
+    l_ecnumber goterm.ecnumber%TYPE;
+BEGIN
+    resultado = '';
+    OPEN cursor_goid;
+    LOOP
+	FETCH cursor_goid INTO current_goid;
+	IF FOUND THEN
+
+	    IF resultado<>'' THEN resultado = resultado || ';'; END IF;
+
+	    SELECT INTO l_namespace namespace FROM goterm WHERE goterm.goid = current_goid;
+	    
+	    IF l_namespace = 'biological_process' THEN 
+		l_aspect = 'P';
+	    ELSIF l_namespace = 'molecular_function' THEN 
+		l_aspect = 'F';
+	    ELSE 
+		l_aspect = 'C';
+	    END IF;
+	
+	    resultado = resultado || 'FT                   /GO_component="GO:aspect= ' || l_aspect || 
+	    '; term=' || getgoname(current_goid) ||'; GOid=' || current_goid || '; evidence= ISS;";' ||
+	    'FT                   /GO_' || split_part(l_namespace,'_',2) || '="' || current_goid ||'"';
+
+	ELSE
+		EXIT;
+	END IF;
+    END LOOP;
+    --Seleciona um EC_Number seja do mapeamento feito pelo Blast2GO ou pela tabela goterm
+    SELECT INTO l_ecnumber ec_number FROM gene WHERE systematic_id=nome;
+    IF l_ecnumber <> '' THEN
+	resultado = resultado  || ';FT                   /EC_Number="' || l_ecnumber || '";';
+    ELSE
+	SELECT INTO l_ecnumber ecnumber FROM goterm WHERE goid=current_goid;
+	IF l_ecnumber <> '' THEN
+		resultado = resultado  || ';FT                   /EC_Number="' || l_ecnumber || '";';
+    	END IF;
+    END IF;
+    
+    CLOSE cursor_goid;
+    RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.getallgo(nome character varying) OWNER TO postgres;
+
+--
+-- Name: getgoname(character varying); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION getgoname(alvo character varying) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    r goterm%rowtype;
+    cursor_go CURSOR FOR SELECT * FROM goterm WHERE  goterm.goid = alvo;
+    resultado text;
+BEGIN
+    resultado = '';
+    OPEN cursor_go;
+    LOOP
+	FETCH cursor_go INTO r;
+	IF FOUND THEN
+		resultado = r.name;
+	END IF;
+	IF not FOUND THEN
+		EXIT;
+	END IF;
+    END LOOP;
+    CLOSE cursor_go;
+    RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.getgoname(alvo character varying) OWNER TO postgres;
+
+--
+-- Name: getmultipos(character varying); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION getmultipos(nome character varying) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    inicio integer;
+    fim integer;
+    cursor_multipos CURSOR FOR  SELECT pos_begin, pos_end FROM MULTIPOS where 	gene_systematic_id = nome;
+    cursor_pos CURSOR FOR  SELECT pos_begin, pos_end FROM GENE where systematic_id = nome;
+    resultado text;
+BEGIN
+    resultado = '';
+    OPEN cursor_multipos;
+    LOOP
+	FETCH cursor_multipos INTO inicio, fim;
+	IF FOUND THEN 
+		IF resultado <> '' THEN 
+			resultado = resultado || ',';
+		END IF;
+		resultado = resultado || inicio || '..' || fim ;
+	END IF;
+	IF not FOUND THEN EXIT;
+	END IF;
+    END LOOP;
+    CLOSE cursor_multipos;
+    IF resultado = '' THEN
+	OPEN cursor_pos;
+	  FETCH cursor_pos INTO inicio, fim;
+	  resultado = resultado || inicio || '..' || fim ;
+	CLOSE cursor_pos;
+    END IF;
+    RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.getmultipos(nome character varying) OWNER TO postgres;
+
+--
+-- Name: getoptu(integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION getoptu(pos_begin integer, pos_end integer) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    r fgenes%rowtype;
+    cursor_fgenes CURSOR FOR SELECT * FROM fgenes WHERE (fgenes.inicio = pos_begin or fgenes.fim = pos_end);
+    resultado text;
+    qtecds integer; 
+BEGIN
+--update gene set "OpTu" = null
+--update gene set "OpTu" = getOpTu(pos_begin, pos_end);
+    resultado = 'not found';
+    OPEN cursor_fgenes;
+	FETCH cursor_fgenes INTO r;
+	IF FOUND THEN
+		resultado = r."Tipo";
+		IF r."Tipo" = 'Op' THEN
+			SELECT INTO qtecds max(entidade_ordem) from fgenes where fgenes.entidade = r.entidade and fgenes.organism = r.organism;
+			resultado = resultado || ' (' || r.entidade_ordem || ' from ' || qtecds || ')' ;
+		END IF;
+	END IF;
+    CLOSE cursor_fgenes;
+    RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.getoptu(pos_begin integer, pos_end integer) OWNER TO postgres;
+
+--
+-- Name: getsignal(character varying); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION getsignal(nome character varying) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    r signal%rowtype;
+    cursor_signal CURSOR FOR SELECT * FROM signal WHERE  signal.gene_systematic_id = nome;
+    resultado text;
+BEGIN
+    resultado = '';
+    OPEN cursor_signal;
+    LOOP
+	FETCH cursor_signal INTO r;
+	IF FOUND THEN
+		IF r.orientation = '-' THEN
+			resultado = resultado || 
+			'FT   misc_feature    complement(' || r.pos_begin || '..' || r.pos_end || ');' ||
+			'FT                   /coord="' || r.pos_clevage || ',' || to_char( (int4(r.pos_clevage)+1),'999') || '";' ||
+			'FT                   /domain="' || r.signaltext || '";' ||
+			'FT                   /id="' || r.gene_systematic_id ||'";' ||
+			'FT                   /label=' || r.predictedby || ';' ||
+			'FT                   /note="' || r.note || '";' ||
+			'FT                   /colour=13;';
+		ELSE
+			resultado = resultado || 
+			'FT   misc_feature    ' || r.pos_begin || '..' || r.pos_end || ';' ||
+			'FT                   /coord="' || r.pos_clevage || ',' || to_char( (int4(r.pos_clevage)+1),'999') || '";' ||
+			'FT                   /domain="' || r.signaltext || '";' ||
+			'FT                   /id="' || r.gene_systematic_id ||'";' ||
+			'FT                   /label=' || r.predictedby || ';' ||
+			'FT                   /note="' || r.note || '";' ||
+			'FT                   /colour=13;';
+		END IF; 
+	ELSE
+		EXIT;
+	END IF;
+    END LOOP;
+    CLOSE cursor_signal;
+    RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.getsignal(nome character varying) OWNER TO postgres;
+
+--
+-- Name: getsignal_surfg(character varying, integer, integer, character); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION getsignal_surfg(nome character varying, pos_begin integer, pos_end integer, orientation character) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    r signal%rowtype;
+    cursor_signal CURSOR FOR SELECT * FROM signal WHERE  signal.gene_systematic_id = nome;
+    resultado text;
+BEGIN
+    resultado = '';
+    OPEN cursor_signal;
+    LOOP
+	FETCH cursor_signal INTO r;
+	IF FOUND THEN
+		IF orientation = '-' THEN
+			resultado = resultado || 
+			'FT   misc_feature    complement(' || pos_end - (int4(r.pos_clevage)*3) || '..' || pos_end || ');' ||
+			'FT                   /coord="' || r.pos_clevage || ',' || to_char( (int4(r.pos_clevage)+1),'999') || '";' ||
+			'FT                   /domain="SIGNALP 3.0";' ||
+			'FT                   /id="' || r.gene_systematic_id ||'";' ||
+			'FT                   /label=Surfg Plus 1.0;' ||
+			'FT                   /colour=2;';
+		ELSE
+			resultado = resultado || 
+			'FT   misc_feature    ' || pos_begin || '..' || pos_begin + (int4(r.pos_clevage)*3) || ';' ||
+			'FT                   /coord="' || r.pos_clevage || ',' || to_char( (int4(r.pos_clevage)+1),'999') || '";' ||
+			'FT                   /domain="SIGNALP 3.0";' ||
+			'FT                   /id="' || r.gene_systematic_id ||'";' ||
+			'FT                   /label=Surfg Plus 1.0;' ||
+			'FT                   /colour=2;';
+		END IF; 
+	ELSE
+		EXIT;
+	END IF;
+    END LOOP;
+    CLOSE cursor_signal;
+    RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.getsignal_surfg(nome character varying, pos_begin integer, pos_end integer, orientation character) OWNER TO postgres;
+
+--
+-- Name: gettmh(character varying); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION gettmh(nome character varying) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    cursor_tmh CURSOR FOR SELECT gene.systematic_id, gene.pos_begin, gene.pos_end, gene.orientation, tmh.tmhid, tmh.size, tmh.pos_begin, tmh.pos_end
+							 FROM gene, tmh WHERE  tmh.gene_systematic_id=gene.systematic_id and tmh.gene_systematic_id = nome;
+	systematic_id text;
+	pos_begin integer;
+	pos_end integer;
+	orientation char;
+	tmhid character varying(5);
+	tmh_size integer;
+	tmh_begin integer;
+	tmh_end integer;
+
+
+    resultado text;
+BEGIN
+    resultado = '';
+    OPEN cursor_tmh;
+    LOOP
+	FETCH cursor_tmh INTO systematic_id, pos_begin, pos_end, orientation, tmhid, tmh_size, tmh_begin, tmh_end;
+	IF FOUND THEN
+		IF orientation = '-' THEN
+			resultado = resultado || 
+	'FT   misc_feature    complement(' || to_char( (pos_end-(3*int4(tmh_begin))),'9999999') || '..' || to_char( (pos_end-(3*int4(tmh_end))),'9999999') || ');' ||
+	'FT                   /coord="' || tmh_begin || '..' || tmh_end || '";' ||
+	'FT                   /domain="TRANSMEMBRANE HELIX";' ||
+	'FT                   /id="' || systematic_id ||'";' ||
+	'FT                   /label=TMHelix;' ||
+	'FT                   /note="Possible TMHelix ' || tmhid ||'";' ||
+	'FT                   /colour=6;';
+		ELSE
+			resultado = resultado || 
+	'FT   misc_feature    ' || to_char( (pos_begin+(3*int4(tmh_begin))),'9999999') || '..' || to_char( (pos_begin+(3*int4(tmh_end))),'9999999') || ';' ||
+	'FT                   /coord="' || tmh_begin || '..' || tmh_end || '";' ||
+	'FT                   /domain="TRANSMEMBRANE HELIX";' ||
+	'FT                   /id="' || systematic_id ||'";' ||
+	'FT                   /label=TMHelix;' ||
+	'FT                   /note="Possible TMHelix ' || tmhid ||'";' ||
+	'FT                   /colour=6;';
+		END IF; 
+	ELSE
+		EXIT;
+	END IF;
+    END LOOP;
+    CLOSE cursor_tmh;
+    RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.gettmh(nome character varying) OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: fgenes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE fgenes (
+    id integer,
+    entidade integer,
+    "Tipo" character varying(2),
+    entidade_ordem integer,
+    orientacao character(1),
+    inicio integer,
+    fim integer,
+    score integer,
+    organism character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.fgenes OWNER TO postgres;
+
+--
+-- Name: lista_operons_coryneregnet(fgenes); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION lista_operons_coryneregnet(head fgenes) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    tail fgenes%rowtype;
+    cursor_fgenes_tail CURSOR FOR SELECT * FROM fgenes WHERE fgenes.entidade = head.entidade AND fgenes.entidade_ordem > 1;
+    resultado text;
+    nome_gene text; 
+BEGIN
+--SELECT lista_operons_coryneregnet(fgenes.*) FROM fgenes WHERE entidade_ordem = 1 and "Tipo" = 'Op' order by inicio;
+    resultado = '';
+	select into nome_gene gene.systematic_id from gene where (head.inicio = gene.pos_begin or head.fim = gene.pos_end);
+	resultado = '>OP_' || nome_gene || ' ' || head.orientacao || ' ' || nome_gene || ' ';
+	OPEN cursor_fgenes_tail;
+	LOOP
+		FETCH cursor_fgenes_tail into tail;
+		IF FOUND THEN
+			select into nome_gene gene.systematic_id from gene where (tail.inicio = gene.pos_begin or tail.fim = gene.pos_end);
+			resultado = resultado || ' ' || nome_gene;
+		ELSE
+			EXIT;
+		END IF;
+	END LOOP;
+	CLOSE cursor_fgenes_tail;
+    RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.lista_operons_coryneregnet(head fgenes) OWNER TO postgres;
+
+--
+-- Name: lista_operons_dir_coryneregnet(fgenes); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION lista_operons_dir_coryneregnet(head fgenes) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    tail fgenes%rowtype;
+    cursor_fgenes_tail CURSOR FOR SELECT * FROM fgenes WHERE fgenes.entidade = head.entidade AND fgenes.entidade_ordem > 1 AND fgenes.organism = head.organism;
+    resultado text;
+    nome_gene text; 
+BEGIN
+--SELECT lista_operons_dir_coryneregnet(fgenes.*) FROM fgenes WHERE entidade_ordem = 1 and "Tipo" = 'Op' and orientacao = '+' order by inicio;
+    resultado = '';
+	select into nome_gene gene.systematic_id from gene where (head.inicio = gene.pos_begin or head.fim = gene.pos_end) and gene.organism = head.organism;
+	resultado = '>OP_' || nome_gene || ' ' || head.orientacao || ' ' || nome_gene || ' ';
+	OPEN cursor_fgenes_tail;
+	LOOP
+		FETCH cursor_fgenes_tail into tail;
+		IF FOUND THEN
+			select into nome_gene gene.systematic_id from gene where (tail.inicio = gene.pos_begin or tail.fim = gene.pos_end) and tail.organism = gene.organism;
+			resultado = resultado || ' ' || nome_gene;
+		ELSE
+			EXIT;
+		END IF;
+	END LOOP;
+	CLOSE cursor_fgenes_tail;
+    RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.lista_operons_dir_coryneregnet(head fgenes) OWNER TO postgres;
+
+--
+-- Name: lista_operons_rev_coryneregnet(integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION lista_operons_rev_coryneregnet(head_entidade integer, head_max_entidade_ordem integer) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    tail fgenes%rowtype;
+    head fgenes%rowtype;
+    cursor_fgenes_head CURSOR FOR SELECT * FROM fgenes WHERE fgenes.entidade = head_entidade AND fgenes.entidade_ordem = head_max_entidade_ordem;	
+    cursor_fgenes_tail CURSOR FOR SELECT * FROM fgenes WHERE fgenes.entidade = head_entidade AND fgenes.entidade_ordem < head_max_entidade_ordem order by fgenes.entidade_ordem desc;
+    resultado text;
+    nome_gene text; 
+BEGIN
+--SELECT lista_operons_rev_coryneregnet(entidade, max(entidade_ordem)) FROM fgenes where "Tipo" = 'Op' and orientacao = '-' group by entidade;
+    resultado = '';
+	OPEN  cursor_fgenes_head;
+	FETCH cursor_fgenes_head into head;
+	   select into nome_gene gene.systematic_id from gene where (head.inicio = gene.pos_begin or head.fim = gene.pos_end) and gene.organism = head.organism;
+	CLOSE cursor_fgenes_head;
+	resultado = '>OP_' || nome_gene || ' ' || head.orientacao || ' ' || nome_gene || ' ';
+	OPEN cursor_fgenes_tail;
+	LOOP
+		FETCH cursor_fgenes_tail into tail;
+		IF FOUND THEN
+			select into nome_gene gene.systematic_id from gene where (tail.inicio = gene.pos_begin or tail.fim = gene.pos_end)  and tail.organism = head.organism;
+			resultado = resultado || ' ' || nome_gene;
+		ELSE
+			EXIT;
+		END IF;
+	END LOOP;
+	CLOSE cursor_fgenes_tail;
+    RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.lista_operons_rev_coryneregnet(head_entidade integer, head_max_entidade_ordem integer) OWNER TO postgres;
+
+--
+-- Name: originalcolor(integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION originalcolor(pseudogene integer, colour integer) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    resultado text;
+BEGIN
+	IF  	pseudogene = 0 THEN
+		
+		IF colour = 7 THEN
+			resultado = '3';
+		ELSE
+			resultado = to_char( colour, '9');
+		END IF;
+	ELSE
+		resultado = '2;FT                   /pseudo';
+	END IF;
+	RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.originalcolor(pseudogene integer, colour integer) OWNER TO postgres;
+
+--
+-- Name: overlap_check(text, integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION overlap_check(locus_tag text, new_pos integer) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+	cursor_gene CURSOR FOR SELECT gene.pos_begin, gene.pos_end, gene.orientation
+    			 FROM gene WHERE  gene.systematic_id=locus_tag;
+	pos_begin integer;
+	pos_end integer;
+	orientation char;
+	resultado text;
+BEGIN
+	resultado = '';
+	OPEN cursor_gene;
+	FETCH cursor_gene INTO pos_begin, pos_end, orientation;
+	IF FOUND THEN
+		IF orientation = '-' THEN
+			IF new_pos < pos_end THEN
+				resultado = 'update gene set pos_end = ' || new_pos || ' where systematic_id = ' ||  quote_literal(locus_tag) || ';';
+			ELSE
+				resultado = locus_tag || ' ERROR';
+			END IF;
+		ELSE
+			IF new_pos <= pos_begin THEN
+				resultado = locus_tag || ' ERROR';
+			ELSE
+				resultado = 'update gene set pos_begin = ' || new_pos || ' where systematic_id = ' || quote_literal(locus_tag) || ';';
+			END IF;
+		END IF; 
+	ELSE
+		resultado = locus_tag || ' NOT FOUND';
+	END IF;
+	close cursor_gene;
+	RETURN resultado;
+END
+$$;
+
+
+ALTER FUNCTION public.overlap_check(locus_tag text, new_pos integer) OWNER TO postgres;
+
+--
+-- Name: recreate_id(text, text); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION recreate_id(p_organism text, p_locus_tag text) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    new_locus_tag text;
+    locus_tag text;
+    current_id int;
+    cursor_genome CURSOR FOR SELECT systematic_id FROM gene WHERE organism = p_organism order by pos_begin;
+BEGIN
+
+    current_id = 0;
+    OPEN cursor_genome;
+    LOOP
+    FETCH cursor_genome INTO locus_tag;
+    IF FOUND THEN
+                new_locus_tag  = '';
+        current_id = current_id + 1;
+
+        IF    current_id < 10 THEN
+            new_locus_tag = p_locus_tag || '000' || trim(both from to_char(current_id,    '9'));
+        ELSIF current_id < 100 THEN
+            new_locus_tag = p_locus_tag || '00'  || trim(both from to_char(current_id,    '99'));
+        ELSIF current_id < 1000 THEN
+            new_locus_tag = p_locus_tag || '0'   || trim(both from to_char(current_id,    '999'));
+        ELSE
+            new_locus_tag = p_locus_tag ||          trim(both from to_char(current_id,    '9999'));
+        END IF;
+
+        UPDATE GENE SET systematic_id = new_locus_tag where systematic_id = locus_tag;
+    END IF;
+    IF not FOUND THEN EXIT;
+    END IF;
+    END LOOP;
+    CLOSE cursor_genome;
+    RETURN new_locus_tag;
+END
+$$;
+
+
+ALTER FUNCTION public.recreate_id(p_organism text, p_locus_tag text) OWNER TO postgres;
+
+--
+-- Name: blast; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE blast (
+    idblast integer NOT NULL,
+    gene_systematic_id character varying(45),
+    program character varying(20),
+    against character varying(20),
+    filedir character varying(255),
+    similarto character varying(255),
+    besthit_size integer,
+    evalue double precision,
+    identitymatch integer,
+    alignmentsize integer,
+    bitscore double precision,
+    parameters character varying(255)
+);
+
+
+ALTER TABLE public.blast OWNER TO postgres;
+
+--
+-- Name: blast_idblast_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE blast_idblast_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.blast_idblast_seq OWNER TO postgres;
+
+--
+-- Name: blast_idblast_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE blast_idblast_seq OWNED BY blast.idblast;
+
+
+--
+-- Name: blasthits; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE blasthits (
+    query character varying(100),
+    subject character varying(100),
+    identity numeric(5,2),
+    size integer,
+    mismatch integer,
+    gaps integer,
+    query_ini integer,
+    query_end integer,
+    subject_ini integer,
+    subject_end integer,
+    evalue character varying(10),
+    score numeric
+);
+
+
+ALTER TABLE public.blasthits OWNER TO postgres;
+
+--
+-- Name: curated; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE curated (
+    subject character varying(45) NOT NULL,
+    pos_begin integer,
+    pos_end integer,
+    orientation character(1),
+    name character varying(255),
+    note text,
+    curation character varying(100),
+    predictedby character varying(100),
+    previous_systematic_id character varying(45),
+    product character varying(255),
+    seq_nn character varying(255),
+    seq_aa character varying(255),
+    organism character varying(255),
+    ec_number character varying(20),
+    local_subcelular character varying(45),
+    similarity character varying(255),
+    blastp_file character varying(500),
+    pseudogene integer,
+    pathogenicity integer,
+    "OpTu" character varying(20),
+    colour integer,
+    protein_id character varying(100),
+    type integer,
+    cds_size integer
+);
+
+
+ALTER TABLE public.curated OWNER TO postgres;
+
+--
+-- Name: destiny; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE destiny (
+    query character varying(100),
+    inicio integer,
+    fim integer,
+    tamanho integer
+);
+
+
+ALTER TABLE public.destiny OWNER TO postgres;
+
+--
+-- Name: TABLE destiny; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE destiny IS 'Coordenadas e tamanho das CDS para as quais a versão 12 será exportada para a versão 13, baseado em resultados de blast.';
+
+
+--
+-- Name: dnarepeat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE dnarepeat (
+    idrepeat integer NOT NULL,
+    identifiedby character varying(45),
+    pos_begin integer,
+    pos_end integer,
+    note character varying(255),
+    orientation character(1),
+    organism character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.dnarepeat OWNER TO postgres;
+
+--
+-- Name: dnarepeat_idrepeat_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE dnarepeat_idrepeat_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.dnarepeat_idrepeat_seq OWNER TO postgres;
+
+--
+-- Name: dnarepeat_idrepeat_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE dnarepeat_idrepeat_seq OWNED BY dnarepeat.idrepeat;
+
+
+--
+-- Name: domain; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE domain (
+    iddomain integer NOT NULL,
+    gene_systematic_id character varying(45),
+    label character varying(45),
+    pos_begin integer,
+    pos_end integer,
+    code character varying(45),
+    score double precision,
+    name character varying(255),
+    orientation character(1),
+    note character varying(255),
+    previous_systematic_id character varying(45)
+);
+
+
+ALTER TABLE public.domain OWNER TO postgres;
+
+--
+-- Name: domain_iddomain_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE domain_iddomain_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.domain_iddomain_seq OWNER TO postgres;
+
+--
+-- Name: domain_iddomain_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE domain_iddomain_seq OWNED BY domain.iddomain;
+
+
+--
+-- Name: gene; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE gene (
+    systematic_id character varying(45) NOT NULL,
+    pos_begin integer,
+    pos_end integer,
+    orientation character(1),
+    name character varying(255),
+    note text,
+    curation character varying(100),
+    predictedby character varying(100),
+    previous_systematic_id character varying(45),
+    product character varying(255),
+    seq_nn character varying(255),
+    seq_aa character varying(255),
+    organism character varying(255),
+    ec_number character varying(20),
+    local_subcelular character varying(45),
+    similarity character varying(255),
+    blastp_file character varying(500),
+    pseudogene integer DEFAULT 0 NOT NULL,
+    pathogenicity integer DEFAULT 0 NOT NULL,
+    "OpTu" character varying(20),
+    colour integer,
+    protein_id character varying(100),
+    type integer,
+    cds_size integer,
+    pan_id character varying(45)
+);
+
+
+ALTER TABLE public.gene OWNER TO postgres;
+
+--
+-- Name: go; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE go (
+    idgo integer NOT NULL,
+    gene_systematic_id character varying(45),
+    go_type character varying(20),
+    go_value character varying(255),
+    go_id character varying(15)
+);
+
+
+ALTER TABLE public.go OWNER TO postgres;
+
+--
+-- Name: go_idgo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE go_idgo_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.go_idgo_seq OWNER TO postgres;
+
+--
+-- Name: go_idgo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE go_idgo_seq OWNED BY go.idgo;
+
+
+--
+-- Name: goterm; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE goterm (
+    goid character varying(15) NOT NULL,
+    name character varying(255),
+    namespace character varying(255),
+    def text,
+    ecnumber character varying(20)
+);
+
+
+ALTER TABLE public.goterm OWNER TO postgres;
+
+--
+-- Name: multipos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE multipos (
+    gene_systematic_id character varying(45),
+    pos_begin integer,
+    pos_end integer
+);
+
+
+ALTER TABLE public.multipos OWNER TO postgres;
+
+--
+-- Name: netmhc; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE netmhc (
+    pos integer,
+    epitope character varying(10),
+    logscore double precision,
+    affinity integer,
+    bindlevel character varying(2),
+    protein character varying(100),
+    allele character varying(20)
+);
+
+
+ALTER TABLE public.netmhc OWNER TO postgres;
+
+--
+-- Name: pgrv; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pgrv (
+    locus_tag character varying(45),
+    pan_id character varying(20),
+    local_subcellular character varying(20),
+    general character varying(20),
+    coverage character varying(5)
+);
+
+
+ALTER TABLE public.pgrv OWNER TO postgres;
+
+--
+-- Name: rrna; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE rrna (
+    locus_tag character varying(45) NOT NULL,
+    pos_begin integer,
+    pos_end integer,
+    orientation character(1),
+    product character varying(255),
+    organism character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.rrna OWNER TO postgres;
+
+--
+-- Name: signal; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE signal (
+    idsignal integer NOT NULL,
+    gene_systematic_id character varying(45),
+    predictedby character varying(45),
+    pos_begin integer,
+    pos_end integer,
+    pos_clevage integer,
+    signaltext character varying(255),
+    orientation character(1),
+    note character varying(255),
+    previous_systematic_id character varying(45)
+);
+
+
+ALTER TABLE public.signal OWNER TO postgres;
+
+--
+-- Name: signal_idsignal_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE signal_idsignal_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.signal_idsignal_seq OWNER TO postgres;
+
+--
+-- Name: signal_idsignal_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE signal_idsignal_seq OWNED BY signal.idsignal;
+
+
+--
+-- Name: similarto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE similarto (
+    query character varying(100),
+    tamanho_query integer,
+    produto character varying(1000),
+    organismo character varying(500),
+    tamanho_subject integer,
+    evalue character varying(10),
+    percentual character varying(5)
+);
+
+
+ALTER TABLE public.similarto OWNER TO postgres;
+
+--
+-- Name: tb_consensus; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tb_consensus (
+    id integer,
+    name character varying(12),
+    product character varying(117),
+    systematicid character varying(20),
+    organism character varying(9),
+    panid character varying(13),
+    set character varying(3),
+    obs character varying(49),
+    pseudo character varying(10),
+    ncbi_id character varying(12),
+    status character varying(6)
+);
+
+
+ALTER TABLE public.tb_consensus OWNER TO postgres;
+
+--
+-- Name: tmh; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tmh (
+    gene_systematic_id character varying(45),
+    tmhid character varying(5),
+    size integer,
+    pos_begin integer,
+    pos_end integer
+);
+
+
+ALTER TABLE public.tmh OWNER TO postgres;
+
+--
+-- Name: trna; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE trna (
+    locus_tag character varying(45) NOT NULL,
+    pos_begin integer,
+    pos_end integer,
+    orientation character(1),
+    product character varying(255),
+    note text,
+    anticodon character varying(255),
+    aa character varying(20),
+    organism character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.trna OWNER TO postgres;
+
+--
+-- Name: idblast; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE blast ALTER COLUMN idblast SET DEFAULT nextval('blast_idblast_seq'::regclass);
+
+
+--
+-- Name: idrepeat; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE dnarepeat ALTER COLUMN idrepeat SET DEFAULT nextval('dnarepeat_idrepeat_seq'::regclass);
+
+
+--
+-- Name: iddomain; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE domain ALTER COLUMN iddomain SET DEFAULT nextval('domain_iddomain_seq'::regclass);
+
+
+--
+-- Name: idgo; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE go ALTER COLUMN idgo SET DEFAULT nextval('go_idgo_seq'::regclass);
+
+
+--
+-- Name: idsignal; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE signal ALTER COLUMN idsignal SET DEFAULT nextval('signal_idsignal_seq'::regclass);
+
+
+--
+-- Name: gene_pkey1; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY gene
+    ADD CONSTRAINT gene_pkey1 PRIMARY KEY (systematic_id);
+
+
+--
+-- Name: pk_locus_tag_rrna; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY rrna
+    ADD CONSTRAINT pk_locus_tag_rrna PRIMARY KEY (locus_tag);
+
+
+--
+-- Name: pk_locus_tag_trna; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY trna
+    ADD CONSTRAINT pk_locus_tag_trna PRIMARY KEY (locus_tag);
+
+
+--
+-- Name: goterm_index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX goterm_index ON goterm USING btree (goid);
+
+
+--
+-- Name: blast_gene_systematic_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY blast
+    ADD CONSTRAINT blast_gene_systematic_id_fkey FOREIGN KEY (gene_systematic_id) REFERENCES gene(systematic_id);
+
+
+--
+-- Name: domain_gene_systematic_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY domain
+    ADD CONSTRAINT domain_gene_systematic_id_fkey FOREIGN KEY (gene_systematic_id) REFERENCES gene(systematic_id) ON DELETE CASCADE;
+
+
+--
+-- Name: go_gene_systematic_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY go
+    ADD CONSTRAINT go_gene_systematic_id_fkey FOREIGN KEY (gene_systematic_id) REFERENCES gene(systematic_id) ON DELETE CASCADE;
+
+
+--
+-- Name: signal_gene_systematic_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY signal
+    ADD CONSTRAINT signal_gene_systematic_id_fkey FOREIGN KEY (gene_systematic_id) REFERENCES gene(systematic_id) ON DELETE CASCADE;
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- Name: fgenes; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE fgenes FROM PUBLIC;
+REVOKE ALL ON TABLE fgenes FROM postgres;
+GRANT ALL ON TABLE fgenes TO postgres;
+GRANT SELECT ON TABLE fgenes TO lgcm;
+
+
+--
+-- Name: blast; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE blast FROM PUBLIC;
+REVOKE ALL ON TABLE blast FROM postgres;
+GRANT ALL ON TABLE blast TO postgres;
+GRANT SELECT ON TABLE blast TO lgcm;
+
+
+--
+-- Name: blasthits; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE blasthits FROM PUBLIC;
+REVOKE ALL ON TABLE blasthits FROM postgres;
+GRANT ALL ON TABLE blasthits TO postgres;
+GRANT SELECT ON TABLE blasthits TO lgcm;
+
+
+--
+-- Name: curated; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE curated FROM PUBLIC;
+REVOKE ALL ON TABLE curated FROM postgres;
+GRANT ALL ON TABLE curated TO postgres;
+GRANT SELECT ON TABLE curated TO lgcm;
+
+
+--
+-- Name: dnarepeat; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE dnarepeat FROM PUBLIC;
+REVOKE ALL ON TABLE dnarepeat FROM postgres;
+GRANT ALL ON TABLE dnarepeat TO postgres;
+GRANT SELECT ON TABLE dnarepeat TO lgcm;
+
+
+--
+-- Name: domain; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE domain FROM PUBLIC;
+REVOKE ALL ON TABLE domain FROM postgres;
+GRANT ALL ON TABLE domain TO postgres;
+GRANT SELECT ON TABLE domain TO lgcm;
+
+
+--
+-- Name: gene; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE gene FROM PUBLIC;
+REVOKE ALL ON TABLE gene FROM postgres;
+GRANT ALL ON TABLE gene TO postgres;
+GRANT SELECT ON TABLE gene TO lgcm;
+
+
+--
+-- Name: go; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE go FROM PUBLIC;
+REVOKE ALL ON TABLE go FROM postgres;
+GRANT ALL ON TABLE go TO postgres;
+GRANT SELECT ON TABLE go TO lgcm;
+
+
+--
+-- Name: goterm; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE goterm FROM PUBLIC;
+REVOKE ALL ON TABLE goterm FROM postgres;
+GRANT ALL ON TABLE goterm TO postgres;
+GRANT SELECT ON TABLE goterm TO lgcm;
+GRANT ALL ON TABLE goterm TO PUBLIC;
+
+
+--
+-- Name: multipos; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE multipos FROM PUBLIC;
+REVOKE ALL ON TABLE multipos FROM postgres;
+GRANT ALL ON TABLE multipos TO postgres;
+GRANT SELECT ON TABLE multipos TO lgcm;
+
+
+--
+-- Name: netmhc; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE netmhc FROM PUBLIC;
+REVOKE ALL ON TABLE netmhc FROM postgres;
+GRANT ALL ON TABLE netmhc TO postgres;
+GRANT SELECT ON TABLE netmhc TO lgcm;
+
+
+--
+-- Name: pgrv; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE pgrv FROM PUBLIC;
+REVOKE ALL ON TABLE pgrv FROM postgres;
+GRANT ALL ON TABLE pgrv TO postgres;
+GRANT SELECT ON TABLE pgrv TO lgcm;
+
+
+--
+-- Name: rrna; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE rrna FROM PUBLIC;
+REVOKE ALL ON TABLE rrna FROM postgres;
+GRANT ALL ON TABLE rrna TO postgres;
+GRANT SELECT ON TABLE rrna TO lgcm;
+
+
+--
+-- Name: signal; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE signal FROM PUBLIC;
+REVOKE ALL ON TABLE signal FROM postgres;
+GRANT ALL ON TABLE signal TO postgres;
+GRANT SELECT ON TABLE signal TO lgcm;
+
+
+--
+-- Name: similarto; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE similarto FROM PUBLIC;
+REVOKE ALL ON TABLE similarto FROM postgres;
+GRANT ALL ON TABLE similarto TO postgres;
+GRANT SELECT ON TABLE similarto TO lgcm;
+
+
+--
+-- Name: tmh; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE tmh FROM PUBLIC;
+REVOKE ALL ON TABLE tmh FROM postgres;
+GRANT ALL ON TABLE tmh TO postgres;
+GRANT SELECT ON TABLE tmh TO lgcm;
+
+
+--
+-- Name: trna; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE trna FROM PUBLIC;
+REVOKE ALL ON TABLE trna FROM postgres;
+GRANT ALL ON TABLE trna TO postgres;
+GRANT SELECT ON TABLE trna TO lgcm;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

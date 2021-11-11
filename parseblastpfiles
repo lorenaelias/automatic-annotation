@@ -1,0 +1,13 @@
+#!/bin/sh -
+if [ $# = 1 -a  -r $1 ]
+then
+   echo "id\ttamanho\tproduto\torganismo\tevalue\tpercentual" > similarto.tab
+   for i in `cat $1`
+   do
+	./firsthitparser $i >> similarto.tab
+   done    
+   echo "\n\nReference: Santos, A.R., Miyoshi, A., Azevedo, V. (2011), \"CpDB: A database relational schema and tools for bacterian genomes annotation and pos-genome research\", unpublished\n\nContacts: asantos@icb.ufmg.br, miyoshi@icb.ufmg.br, vasco@icb.ufmg.br\n"
+
+else
+    echo Parametro= lista com arquivos para serem processados
+fi
